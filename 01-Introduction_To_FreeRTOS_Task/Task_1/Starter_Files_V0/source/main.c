@@ -107,7 +107,7 @@ int main( void )
 	    (void)xTaskCreate(
                     vidToggle_Task,       	/* Function that implements the task. */
                     "TOGGLE_TASK",          /* Text name for the task. */
-                    100,      								/* Stack size in words, not bytes. */
+                    10,      								/* Stack size in words, not bytes. */
                     ( void * ) 1,    				/* Parameter passed into the task. */
                     1,											/* Priority at which the task is created. */
                     &xHandle );
