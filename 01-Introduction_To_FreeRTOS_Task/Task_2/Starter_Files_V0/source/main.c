@@ -124,9 +124,9 @@ void vidLED1000MS_Task(void * pvParameters)
 		for(;;)
 		{
 			GPIO_write(LED1000MS_PORT, LED1000MS_PIN, PIN_IS_HIGH);
-			vTaskDelay(500);
+			vTaskDelay(1000);
 			GPIO_write(LED1000MS_PORT, LED1000MS_PIN, PIN_IS_LOW);
-			vTaskDelay(500);
+			vTaskDelay(1000);
 		}
 	}	
 /*
@@ -142,7 +142,7 @@ int main( void )
 	  (void)xTaskCreate(
                     vidLED100MS_Task,       	/* Function that implements the task. */
                     "LED100MS_TASK",          /* Text name for the task. */
-                    10,      								/* Stack size in words, not bytes. */
+                    100,      								/* Stack size in words, not bytes. */
                     ( void * ) 1,    				/* Parameter passed into the task. */
                     1,											/* Priority at which the task is created. */
                     &xHandleLED100MS);
@@ -150,7 +150,7 @@ int main( void )
 		(void)xTaskCreate(
                     vidLED500MS_Task,       	/* Function that implements the task. */
                     "LED500MS_TASK",          /* Text name for the task. */
-                    10,      								/* Stack size in words, not bytes. */
+                    100,      								/* Stack size in words, not bytes. */
                     ( void * ) 1,    				/* Parameter passed into the task. */
                     1,											/* Priority at which the task is created. */
                     &xHandleLED500MS);
@@ -158,7 +158,7 @@ int main( void )
 		(void)xTaskCreate(
                     vidLED1000MS_Task,       	/* Function that implements the task. */
                     "LED1000MS_TASK",          /* Text name for the task. */
-                    10,      								/* Stack size in words, not bytes. */
+                    100,      								/* Stack size in words, not bytes. */
                     ( void * ) 1,    				/* Parameter passed into the task. */
                     1,											/* Priority at which the task is created. */
                     &xHandleLED1000MS);
