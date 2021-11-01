@@ -74,13 +74,17 @@
 /* Constants for the ComTest demo application tasks. */
 #define mainCOM_TEST_BAUD_RATE	( ( unsigned long ) 115200 )
 
-#define LED_PORT							PORT_0
-#define LED_PIN								PIN0
+#define LED_PORT										PORT_0
+#define LED_PIN											PIN0
 
-#define BUTTON_PORT						PORT_0
-#define BUTTON_PIN						PIN1
+#define BUTTON_PORT									PORT_0
+#define BUTTON_PIN									PIN1
 
-#define ZERO_VALUE						(0u)
+#define ZERO_VALUE									(0u)
+#define BUTTON_SCAN_PERIODICITY			(100u)
+#define TIME_2000MS									(2000u)
+#define TIME_4000MS									(4000u)
+
 typedef enum{
 	LED_TOGGLE_100MS,
 	LED_TOGGLE_400MS,
@@ -99,9 +103,6 @@ TaskHandle_t xHandleLED = NULL;
 TaskHandle_t xHandleBUTTON = NULL;
 ledToggleStatus_t ledTogglStatus = LED_TOGGLE_OFF;
 
-		static pinState_t loc_ButtonCurrentStatus;
-		static pinState_t loc_ButtonPreviousStatus;
-		static uint8_t loc_TimeCounter = ZERO_VALUE;
 /*	LED Task Implementation Code	*/
 void vidLED_Task(void * pvParameters)
 	{
@@ -130,42 +131,53 @@ void vidLED_Task(void * pvParameters)
 	
 /*	BUTTON Task Implementation Code	*/
 void vidBUTTON_Task(void * pvParameters)
-	{
-
-		for(;;)
- 		{
-				loc_ButtonCurrentStatus = GPIO_read(BUTTON_PORT, BUTTON_PIN);
-				if (loc_ButtonCurrentStatus == PIN_IS_HIGH)
-						{
-							loc_TimeCounter++;
-						}
-				else
-						{
-								if (loc_ButtonPreviousStatus == PIN_IS_HIGH) /*	Button Released	*/
-										{
-													if (((loc_TimeCounter*10) >= 2000)  && ((loc_TimeCounter*10) < 4000))
-															{
-																ledTogglStatus = LED_TOGGLE_100MS;
-															}
-										 else if ((loc_TimeCounter*10) >= 4000)
-															{
-																ledTogglStatus = LED_TOGGLE_400MS;
-															}				
-												else
-															{
-																ledTogglStatus = LED_TOGGLE_OFF;
-															}														
-												loc_TimeCounter = ZERO_VALUE;
-										}		
-								else
-										{
-												/*	Do Nothing	*/
-										}
-						}		
-			loc_ButtonPreviousStatus = loc_ButtonCurrentStatus;
-			vTaskDelay(100);			
+		{
+				static pinState_t loc_ButtonCurrentStatus;
+				static pinState_t loc_ButtonPreviousStatus;
+				static uint8_t loc_TimeCounter = ZERO_VALUE;
+			for(;;)
+			{
+					loc_ButtonCurrentStatus = GPIO_read(BUTTON_PORT, BUTTON_PIN);
+				/*	Button Is Being Pressed Now	*/
+					if (loc_ButtonCurrentStatus == PIN_IS_HIGH)
+							{
+								/*	Evaluate Pressing Time	*/
+								loc_TimeCounter++;
+							}
+					else
+						/*	Button May be Released Or Not Pressed	*/
+							{
+								/*	Button Is Released	*/
+									if (loc_ButtonPreviousStatus == PIN_IS_HIGH)
+											{
+													/*	If Button Pressed For Time Between 2 and 4 Seconds	*/
+														if (((loc_TimeCounter*BUTTON_SCAN_PERIODICITY) >= TIME_2000MS)&&
+																((loc_TimeCounter*BUTTON_SCAN_PERIODICITY) < TIME_4000MS))
+																{
+																	ledTogglStatus = LED_TOGGLE_100MS;
+																}
+																	/*	If Button Pressed For Time Greater Than 4 Seconds	*/
+											 else if ((loc_TimeCounter*BUTTON_SCAN_PERIODICITY) >= TIME_4000MS)
+																{
+																	ledTogglStatus = LED_TOGGLE_400MS;
+																}				
+																/*	If Button Pressed For Time Lower Than 2 Seconds	*/
+													else
+																{
+																	ledTogglStatus = LED_TOGGLE_OFF;
+																}						
+																	/*	Reset Time Evaluation Counter	*/
+													loc_TimeCounter = ZERO_VALUE;
+											}		
+									else
+											{
+													/*	Do Nothing	*/
+											}
+							}		
+				loc_ButtonPreviousStatus = loc_ButtonCurrentStatus;
+				vTaskDelay(BUTTON_SCAN_PERIODICITY);			
+			}
 		}
-	}
 	
 /*
  * Application entry point:

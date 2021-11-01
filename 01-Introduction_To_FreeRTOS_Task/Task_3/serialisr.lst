@@ -379,7 +379,7 @@ Symbol: pxCurrentTCB
    Definitions
       At line 29 in file .\Source\portable\RVDS\ARM7_LPC21xx\portmacro.inc
    Uses
-      At line 85 in macro _µTEXT
+      At line 85 in macro _¸TEXT
       at line 51 in file serial\serialISR.s
       At line 36 in macro ÿÿrtRESTORE_CONTEXT
       at line 61 in file serial\serialISR.s
@@ -390,7 +390,7 @@ Symbol: ulCriticalNesting
    Definitions
       At line 28 in file .\Source\portable\RVDS\ARM7_LPC21xx\portmacro.inc
    Uses
-      At line 81 in macro _µTEXT
+      At line 81 in macro _¸TEXT
       at line 51 in file serial\serialISR.s
       At line 40 in macro ÿÿrtRESTORE_CONTEXT
       at line 61 in file serial\serialISR.s
