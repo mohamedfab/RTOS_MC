@@ -668,7 +668,7 @@ Symbol: pxCurrentTCB
    Uses
       At line 36 in macro ÿÿortYieldBONTEXT
       at line 56 in file Source\portable\RVDS\ARM7_LPC21xx\portASM.s
-      At line 85 in macro z¤TEXT
+      At line 85 in macro zÃTEXT
       at line 83 in file Source\portable\RVDS\ARM7_LPC21xx\portASM.s
 
 ulCriticalNesting 00000000
@@ -679,7 +679,7 @@ Symbol: ulCriticalNesting
    Uses
       At line 40 in macro ÿÿortYieldBONTEXT
       at line 56 in file Source\portable\RVDS\ARM7_LPC21xx\portASM.s
-      At line 81 in macro z¤TEXT
+      At line 81 in macro zÃTEXT
       at line 83 in file Source\portable\RVDS\ARM7_LPC21xx\portASM.s
 
 vTaskSwitchContext 00000000
